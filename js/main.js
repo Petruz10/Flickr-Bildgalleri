@@ -8,6 +8,7 @@ var API_KEY = "48a462518d46fee4c62640f416cc7f7f";
 
 var formElem;
 var flickrImgElem;
+var largeImgElem;
 var tags;
 
 
@@ -15,6 +16,7 @@ function init()
 {
     formElem = document.getElementById("searchForm");
     flickrImgElem = document.getElementById("flickrImg");
+    largeImgElem = document.getElementById("largeImg");
 
     formElem.searchBtn.addEventListener("click",searchImg);
 
@@ -60,9 +62,21 @@ function newImgs(response) {
 		newElem = document.createElement("img");
 		newElem.setAttribute("src",imgUrl);
 		newElem.setAttribute("data-photo",JSON.stringify(photo));
-		//newElem.addEventListener("click",enlargeImg);
+		newElem.addEventListener("click", showLargeImg);
 		flickrImgElem.appendChild(newElem);
 	}
+}
+
+function showLargeImg()
+{
+    var photo;		// Objekt med data om fotot
+	var imgUrl;		// Adress till en bild
+    photo = JSON.parse(this.getAttribute("data-photo"));
+    console.log("photo", photo);
+    imgUrl = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_z.jpg";
+   
+    largeImgElem.src = imgUrl;
+    console.log("largeImgElem  " + largeImgElem.src);
 }
 
 window.addEventListener("load", init);
