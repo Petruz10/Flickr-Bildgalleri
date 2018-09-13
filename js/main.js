@@ -9,24 +9,26 @@ var API_KEY = "48a462518d46fee4c62640f416cc7f7f";
 var formElem;
 var flickrImgElem;
 var largeImgElem;
+var photoGalleryElem;
 var tags;
-
+var galleryPhotos =[];
+var _this;
 
 function init()
 {
     formElem = document.getElementById("searchForm");
     flickrImgElem = document.getElementById("flickrImg");
     largeImgElem = document.getElementById("largeImg");
+    photoGalleryElem = document.getElementById("photoGallery");
 
     formElem.searchBtn.addEventListener("click",searchImg);
 
-    console.log("initFUnk");
+    showPhotoGallery();
 }
 
 function searchImg()
 {
-    console.log("search img fun");
-
+    
     tags = formElem.tags.value;
 	pageNr = 1;
 	requestNewImgs();
@@ -62,21 +64,51 @@ function newImgs(response) {
 		newElem = document.createElement("img");
 		newElem.setAttribute("src",imgUrl);
 		newElem.setAttribute("data-photo",JSON.stringify(photo));
-		newElem.addEventListener("click", showLargeImg);
+        newElem.addEventListener("click", showLargeImg);
+        newElem.addEventListener("click", addToPhotoGallery);
 		flickrImgElem.appendChild(newElem);
 	}
 }
 
-function showLargeImg()
+function getPhoto()
 {
     var photo;		// Objekt med data om fotot
 	var imgUrl;		// Adress till en bild
-    photo = JSON.parse(this.getAttribute("data-photo"));
-    console.log("photo", photo);
-    imgUrl = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_z.jpg";
    
-    largeImgElem.src = imgUrl;
-    console.log("largeImgElem  " + largeImgElem.src);
+    photo = JSON.parse(_this.getAttribute("data-photo"));
+    imgUrl = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_z.jpg";
+
+    return imgUrl;
+}
+
+function showLargeImg()
+{
+    _this = this;
+    largeImgElem.src = getPhoto();
+}
+
+function addToPhotoGallery()
+{ 
+    var photo = getPhoto();
+
+    galleryPhotos.push(photo);
+    getGalleryPhotos(photo);
+
+}
+
+function showPhotoGallery()
+{
+    for(var i=0; i<galleryPhotos.length; i++)
+    {
+        getGalleryPhotos(galleryPhotos[i]);
+    }
+}
+
+function getGalleryPhotos(photo)
+{
+    imgElem =  document.createElement("img");
+    imgElem.setAttribute("src",photo);
+    photoGalleryElem.appendChild(imgElem);
 }
 
 window.addEventListener("load", init);
