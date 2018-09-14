@@ -6,24 +6,56 @@
  */
 var API_KEY = "48a462518d46fee4c62640f416cc7f7f";
 
+var searchInputElem;
+var searchResultElem;
+var bigPhotElem;
+var photoGalleryElem;
+var photoGalleryPhotosElem;
+
 var formElem;
 var flickrImgElem;
 var largeImgElem;
-var photoGalleryElem;
 var tags;
 var galleryPhotos =[];
 var _this;
 
+var galleryBtn;
+var backSearchBtn; 
+
 function init()
 {
+    var btns;
     formElem = document.getElementById("searchForm");
     flickrImgElem = document.getElementById("flickrImg");
     largeImgElem = document.getElementById("largeImg");
+    
+    searchInputElem = document.getElementById("searchInput");
+    searchResultElem = document.getElementById("searchResult");
+    bigPhotElem = document.getElementById("bigPhoto");
     photoGalleryElem = document.getElementById("photoGallery");
+    photoGalleryPhotosElem = document.getElementById("photoGalleryPhotos");
+
+    galleryBtn = document.getElementById("galleryBtn");
+    btns = document.getElementsByClassName("backSearchBtn");
+    backSearchBtn = [];
+    for(var i = 0; i < btns.length; backSearchBtn.push(btns[i++]));
 
     formElem.searchBtn.addEventListener("click",searchImg);
+    galleryBtn.addEventListener("click", showPhotoGallery);
+    backSearchBtn.map(function( btn ) {
+        btn.addEventListener("click", showStartPage); 
+    });
 
-    showPhotoGallery();
+}
+
+function showStartPage()
+{
+    removeGalleryPhotos();
+    console.log("START PAGE");
+    searchInputElem.style.display = "block";
+    searchResultElem.style.display = "none";
+    bigPhotElem.style.display = "none";
+    photoGalleryElem.style.display = "none";
 }
 
 function searchImg()
@@ -64,10 +96,13 @@ function newImgs(response) {
 		newElem = document.createElement("img");
 		newElem.setAttribute("src",imgUrl);
 		newElem.setAttribute("data-photo",JSON.stringify(photo));
-        newElem.addEventListener("click", showLargeImg);
+        //newElem.addEventListener("click", showLargeImg);
         newElem.addEventListener("click", addToPhotoGallery);
 		flickrImgElem.appendChild(newElem);
-	}
+    }
+    
+    searchInputElem.style.display = "none";
+    searchResultElem.style.display = "block";
 }
 
 function getPhoto()
@@ -76,39 +111,67 @@ function getPhoto()
 	var imgUrl;		// Adress till en bild
    
     photo = JSON.parse(_this.getAttribute("data-photo"));
-    imgUrl = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_z.jpg";
-
+    imgUrl = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_s.jpg";
+//_z.jpg for large
     return imgUrl;
 }
 
 function showLargeImg()
 {
     _this = this;
-    largeImgElem.src = getPhoto();
+    var newstr; 
+    newstr = this.src.replace("_s.jpg", "_z.jpg");
+    console.log(this.src);
+    largeImgElem.src = newstr;
 }
 
 function addToPhotoGallery()
 { 
+    _this = this;
     var photo = getPhoto();
 
     galleryPhotos.push(photo);
-    getGalleryPhotos(photo);
+   // getGalleryPhotos(photo);
 
 }
 
 function showPhotoGallery()
 {
+    photos = galleryPhotos;
+
     for(var i=0; i<galleryPhotos.length; i++)
     {
         getGalleryPhotos(galleryPhotos[i]);
     }
+
+    searchInputElem.style.display = "none";
+    searchResultElem.style.display = "none";
+    bigPhotElem.style.display = "none";
+    photoGalleryElem.style.display = "block";
+
+    console.log("show GAllery photos");
 }
 
 function getGalleryPhotos(photo)
 {
     imgElem =  document.createElement("img");
     imgElem.setAttribute("src",photo);
-    photoGalleryElem.appendChild(imgElem);
+    photoGalleryPhotosElem.appendChild(imgElem);
+
+    imgElem.addEventListener("click", showLargeImg);
 }
 
+function removeGalleryPhotos()
+{
+  while (photoGalleryPhotosElem.firstChild) 
+  {
+      photoGalleryPhotosElem.removeChild(photoGalleryPhotosElem.firstChild);
+    }
+}
+window.addEventListener("keydown", function(e){
+    if(e.keyCode != 13) return;
+    e.preventDefault();
+    e.stopPropagation();
+    formElem.searchBtn.click();
+})
 window.addEventListener("load", init);

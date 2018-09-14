@@ -10,27 +10,41 @@
 
 <body>
 	<h1>Flickr bilder </h1>
-	<hr>
-	<form id="searchForm">
-		Taggar: <input type="text" name="tags"> 
-		<input type="button" value="Sök" name="searchBtn">
-	</form>
-	<hr>
-	<div id="flickrImg"></div>
-	<div>
-		<button type="button" id="prevBtn">Föregående sida</button>
-		<span id="pageNr"></span>
-		<button type="button" id="nextBtn">Nästa sida</button>
-	</div>
-	<hr>
-	<figure >
-		<img id="largeImg" src="" alt="Stor bild">
-        <figcaption></figcaption>
-    </figure>
-    <br> <hr>
+    
+    <div id="searchInput">
+        <form id="searchForm">
+                Taggar: <input type="text" name="tags"> 
+                <input type="button" value="Sök" name="searchBtn">
+            </form>
+    </div>
+	
+    <div id="searchResult">
+            <div id="flickrImg"></div>
+            <div>
+                <button type="button" id="prevBtn">Föregående sida</button>
+                <span id="pageNr"></span>
+                <button type="button" id="nextBtn">Nästa sida</button>
+
+                <button type="button" id="galleryBtn">visa galleri</button>
+
+                <button type="button" class="backSearchBtn">Gör en ny sökning</button>
+            </div>
+    </div>
+	
+	<div id="bigPhoto">
+        <figure >
+                
+                <figcaption></figcaption>
+            </figure>
+            <br> <hr>
+    </div>
+	
 
     <div id="photoGallery">
+        <button type="button" class="backSearchBtn">Gör en ny sökning</button>
+        <div id="photoGalleryPhotos"> </div>
 
+        <img id="largeImg" src="" alt="Stor bild">
     </div>
     
 </body>

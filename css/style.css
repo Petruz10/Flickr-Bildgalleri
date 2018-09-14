@@ -1,1 +1,21 @@
 /* CSS dokument */
+
+#searchInput
+{
+
+}
+
+#searchResult
+{
+    display: none;
+}
+
+#bigPhoto
+{
+    display: none;
+}
+
+#photoGallery
+{
+    display: none;
+}
