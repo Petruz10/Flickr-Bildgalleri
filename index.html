@@ -15,10 +15,16 @@
     
     <div id="searchInput">
         <form id="searchForm">
-                Sök bilder: <input type="text" name="tags"> 
-                <input type="button" value="Sök" name="searchBtn">
+                Sök bilder: <input type="text" name="tags" id="tags"> 
+                <input type="button" value="Sök" name="searchBtn"
+                id="searchBtn">
             </form>
-            <button type="button" class="galleryBtn">visa galleri</button>
+
+            <div id="searchPageGallery">
+                    <p>...eller</p>
+                    <button type="button" class="galleryBtn">Visa galleri</button>
+            </div>
+           
     </div>
 	
     <div id="searchResult">
@@ -28,7 +34,7 @@
                 <span id="pageNr"></span>
                 <button type="button" id="nextBtn">Nästa sida</button>
 
-                <button type="button" class="galleryBtn">visa galleri</button>
+                <button type="button" class="galleryBtn">Visa galleri</button>
 
                 <button type="button" class="backSearchBtn">Gör en ny sökning</button>
             </div>

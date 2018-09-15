@@ -1,8 +1,22 @@
 /* CSS dokument */
 
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+
 body
 {
     font-family: 'Lobster', cursive;
+}
+
+body h1
+{
+    padding: 20px;
+    padding-left: 35px;
+    font-size: 40px;
 }
 
 #searchInput
@@ -11,11 +25,26 @@ body
 }
 
 #searchInput .galleryBtn
+{  
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 14px;
+}
+
+#searchPageGallery
 {
     position: absolute;
-    top: 55%;
+    top: 60%;
     left: 52%;
     transform: translate(-50%, -50%);
+}
+
+#searchPageGallery p
+{
+    display: inline;
+    padding: 11px;
+    font-size: 20px;
+
 }
 
 #searchForm
@@ -24,6 +53,25 @@ body
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-size: 31px;
+}
+
+#searchForm input
+{
+    font-size: 29px;
+    padding: 8px;
+    border-radius: 18px;
+}
+
+#tags
+{   
+    border: solid 1px lightblue;
+}
+
+#searchBtn
+{
+   /* padding: 14px;*/
+   /* border-radius: 28px;*/
 }
 
 #searchResult
