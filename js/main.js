@@ -11,6 +11,7 @@ var searchResultElem;
 var bigPhotElem;
 var photoGalleryElem;
 var photoGalleryPhotosElem;
+var pageNrElem;
 
 var formElem;
 var flickrImgElem;
@@ -21,6 +22,10 @@ var _this;
 
 var galleryBtn;
 var backSearchBtn; 
+var prevBtn;
+var nextBtn;
+
+var pageNr;
 
 function init()
 {
@@ -36,9 +41,13 @@ function init()
     bigPhotElem = document.getElementById("bigPhoto");
     photoGalleryElem = document.getElementById("photoGallery");
     photoGalleryPhotosElem = document.getElementById("photoGalleryPhotos");
+    pageNrElem = document.getElementById("pageNr");
 
     galleryBtns = document.getElementsByClassName("galleryBtn");
     searchBtns = document.getElementsByClassName("backSearchBtn");
+
+    prevBtn = document.getElementById("prevBtn");
+    nextBtn = document.getElementById("nextBtn");
 
     galleryBtn = [];
     for(var i = 0; i < galleryBtns.length; galleryBtn.push(galleryBtns[i++]));
@@ -55,6 +64,31 @@ function init()
         btn.addEventListener("click", showStartPage); 
     });
 
+    prevBtn.addEventListener("click",prevPage);
+    nextBtn.addEventListener("click",nextPage);
+
+    prevBtn.disabled = true;
+    
+    
+    pageNr = 1;
+
+}
+
+function prevPage() {
+	if (pageNr > 1) {
+		pageNr--;
+		requestNewImgs();
+    }
+    if(pageNr == 1 || pageNr < 1)
+    {
+        prevBtn.disabled = true;
+    }
+} 
+
+function nextPage() {
+    prevBtn.disabled = false;
+	pageNr++;
+	requestNewImgs();
 }
 
 function showStartPage()
@@ -69,9 +103,17 @@ function showStartPage()
 
 function searchImg()
 {
+    if(formElem.tags.value == "") return;
     
+    tags ="";
     tags = formElem.tags.value;
-	pageNr = 1;
+    document.getElementById("resultTags").innerHTML = "Visar resultat för: " +tags;
+    pageNr = 1;
+    
+    if(pageNr == 1 || pageNr < 1)
+    {
+        prevBtn.disabled = true;
+    }
 	requestNewImgs();
 }
 
@@ -79,11 +121,11 @@ function requestNewImgs()
 {
 	var request; // Object för Ajax-anropet
 	//flickrImgElem.innerHTML = "<img src='pics/progress.gif' style='border:none;' >";
-	//pageNrElem.innerHTML = pageNr;
+	pageNrElem.innerHTML = pageNr;
 	if (XMLHttpRequest) { request = new XMLHttpRequest(); } // Olika objekt (XMLHttpRequest eller ActiveXObject), beroende på webbläsare
 	else if (ActiveXObject) { request = new ActiveXObject("Microsoft.XMLHTTP"); }
 	else { alert("Tyvärr inget stöd för AJAX, så data kan inte läsas in"); return false; }
-	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + API_KEY + "&method=flickr.photos.search&tags=" + tags + "&format=json&nojsoncallback=1",true);
+	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + API_KEY + "&method=flickr.photos.search&tags=" + tags + "&per_page=60&page=" +pageNr + "&format=json&nojsoncallback=1",true);
 	request.send(null); // Skicka begäran till servern
 	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
 		if ( (request.readyState == 4) && (request.status == 200) ) newImgs(request.responseText);
@@ -105,7 +147,8 @@ function newImgs(response) {
 		newElem = document.createElement("img");
 		newElem.setAttribute("src",imgUrl);
 		newElem.setAttribute("data-photo",JSON.stringify(photo));
-        newElem.addEventListener("click", addToPhotoGallery);
+        newElem.addEventListener("click", changePhotoGallery);
+        newElem.style.padding = "5px";
 		flickrImgElem.appendChild(newElem);
     }
     
@@ -133,13 +176,37 @@ function showLargeImg()
     largeImgElem.src = newstr;
 }
 
-function addToPhotoGallery()
+function changePhotoGallery()
 { 
     _this = this;
     var photo = getPhoto();
 
-    galleryPhotos.push(photo);
+    if(this.classList.contains("checkedPhoto"))
+    {
+        _this.classList.remove("checkedPhoto");
+        deleteFromPhotoGallery(photo);
+    }
+    else
+    {
+        _this.classList.add("checkedPhoto");
+        addToPhotoGallery(photo);
+    }
+}
 
+function addToPhotoGallery(photo)
+{
+    galleryPhotos.push(photo);
+}
+
+function deleteFromPhotoGallery(photo)
+{
+    galleryPhotos = galleryPhotos.reduce(function(currPhotoGal, currPhoto){
+        if(currPhoto != photo) 
+        {
+            currPhotoGal.push(currPhoto);  
+        }
+        return currPhotoGal;
+    },[]);
 }
 
 function showPhotoGallery()
