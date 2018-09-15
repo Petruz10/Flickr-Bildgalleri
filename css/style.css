@@ -1,8 +1,29 @@
 /* CSS dokument */
 
+body
+{
+    font-family: 'Lobster', cursive;
+}
+
 #searchInput
 {
 
+}
+
+#searchInput .galleryBtn
+{
+    position: absolute;
+    top: 55%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+}
+
+#searchForm
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #searchResult

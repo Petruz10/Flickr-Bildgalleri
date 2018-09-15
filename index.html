@@ -4,18 +4,21 @@
 	<meta charset="UTF-8">
     <title>Flickr bilder</title>
     
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
 	<script type="text/javascript" src="js/main.js"></script>
 </head>
 
 <body>
-	<h1>Flickr bilder </h1>
+	<h1>Mitt FLickr gallery </h1>
     
     <div id="searchInput">
         <form id="searchForm">
-                Taggar: <input type="text" name="tags"> 
+                Sök bilder: <input type="text" name="tags"> 
                 <input type="button" value="Sök" name="searchBtn">
             </form>
+            <button type="button" class="galleryBtn">visa galleri</button>
     </div>
 	
     <div id="searchResult">
@@ -25,7 +28,7 @@
                 <span id="pageNr"></span>
                 <button type="button" id="nextBtn">Nästa sida</button>
 
-                <button type="button" id="galleryBtn">visa galleri</button>
+                <button type="button" class="galleryBtn">visa galleri</button>
 
                 <button type="button" class="backSearchBtn">Gör en ny sökning</button>
             </div>

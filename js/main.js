@@ -24,7 +24,9 @@ var backSearchBtn;
 
 function init()
 {
-    var btns;
+    var searchBtns;
+    var galleryBtns;
+
     formElem = document.getElementById("searchForm");
     flickrImgElem = document.getElementById("flickrImg");
     largeImgElem = document.getElementById("largeImg");
@@ -35,13 +37,20 @@ function init()
     photoGalleryElem = document.getElementById("photoGallery");
     photoGalleryPhotosElem = document.getElementById("photoGalleryPhotos");
 
-    galleryBtn = document.getElementById("galleryBtn");
-    btns = document.getElementsByClassName("backSearchBtn");
+    galleryBtns = document.getElementsByClassName("galleryBtn");
+    searchBtns = document.getElementsByClassName("backSearchBtn");
+
+    galleryBtn = [];
+    for(var i = 0; i < galleryBtns.length; galleryBtn.push(galleryBtns[i++]));
+
     backSearchBtn = [];
-    for(var i = 0; i < btns.length; backSearchBtn.push(btns[i++]));
+    for(var i = 0; i < searchBtns.length; backSearchBtn.push(searchBtns[i++]));
 
     formElem.searchBtn.addEventListener("click",searchImg);
-    galleryBtn.addEventListener("click", showPhotoGallery);
+
+    galleryBtn.map(function( btn ) {
+        btn.addEventListener("click", showPhotoGallery); 
+    });
     backSearchBtn.map(function( btn ) {
         btn.addEventListener("click", showStartPage); 
     });
@@ -51,7 +60,7 @@ function init()
 function showStartPage()
 {
     removeGalleryPhotos();
-    console.log("START PAGE");
+
     searchInputElem.style.display = "block";
     searchResultElem.style.display = "none";
     bigPhotElem.style.display = "none";
@@ -96,7 +105,6 @@ function newImgs(response) {
 		newElem = document.createElement("img");
 		newElem.setAttribute("src",imgUrl);
 		newElem.setAttribute("data-photo",JSON.stringify(photo));
-        //newElem.addEventListener("click", showLargeImg);
         newElem.addEventListener("click", addToPhotoGallery);
 		flickrImgElem.appendChild(newElem);
     }
@@ -107,12 +115,12 @@ function newImgs(response) {
 
 function getPhoto()
 {
-    var photo;		// Objekt med data om fotot
-	var imgUrl;		// Adress till en bild
+    var photo;		
+	var imgUrl;		
    
     photo = JSON.parse(_this.getAttribute("data-photo"));
     imgUrl = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_s.jpg";
-//_z.jpg for large
+
     return imgUrl;
 }
 
@@ -120,8 +128,8 @@ function showLargeImg()
 {
     _this = this;
     var newstr; 
+
     newstr = this.src.replace("_s.jpg", "_z.jpg");
-    console.log(this.src);
     largeImgElem.src = newstr;
 }
 
@@ -131,7 +139,6 @@ function addToPhotoGallery()
     var photo = getPhoto();
 
     galleryPhotos.push(photo);
-   // getGalleryPhotos(photo);
 
 }
 
@@ -148,8 +155,6 @@ function showPhotoGallery()
     searchResultElem.style.display = "none";
     bigPhotElem.style.display = "none";
     photoGalleryElem.style.display = "block";
-
-    console.log("show GAllery photos");
 }
 
 function getGalleryPhotos(photo)
