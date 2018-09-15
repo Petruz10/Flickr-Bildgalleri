@@ -29,7 +29,7 @@
 	
     <div id="searchResult">
 
-        <div id="resultBtns">
+        <div class="resultBtns">
                 <button type="button" class="galleryBtn">Visa galleri</button>
                 <button type="button" class="backSearchBtn">Gör en ny sökning</button>
         </div>
@@ -47,20 +47,21 @@
     </div>
 	
 	<div id="bigPhoto">
-        <figure >
-                
-                <figcaption></figcaption>
-            </figure>
-            <br> <hr>
+        <button type="button" id="closeBtn">X</button>
+        <img id="largeImg" src="" alt="Stor bild">
+        </div>
     </div>
 	
 
     <div id="photoGallery">
-        <button type="button" class="backSearchBtn">Gör en ny sökning</button>
+        <div class="resultBtns">
+             <button type="button" class="backSearchBtn">Gör en ny sökning</button>
+        </div>
+
+        <p>Klicka på en bild för att se den i större format</p>
+        
         <div id="photoGalleryPhotos"> </div>
 
-        <img id="largeImg" src="" alt="Stor bild">
-    </div>
     
 </body>
 </html>
