@@ -29,38 +29,23 @@ var pageNr;
 
 function init()
 {
-    var searchBtns;
-    var galleryBtns;
+    setElems();
+    getLocalStorage();
+    setHandlers();
 
-    if(typeof(Storage) !== "undefined") 
-    {
-        if (localStorage.savedGalleryPhotos) 
-        {
-            galleryPhotos = JSON.parse(localStorage.getItem("savedGalleryPhotos")); 
-        }
-        else
-        {
-            galleryPhotos = [];
-        }
-    }
-
-
-    formElem = document.getElementById("searchForm");
-    flickrImgElem = document.getElementById("flickrImg");
-    largeImgElem = document.getElementById("largeImg");
+    prevBtn.classList.add("disablePrevBtn");
+    prevBtn.disabled = true;
     
-    searchInputElem = document.getElementById("searchInput");
-    searchResultElem = document.getElementById("searchResult");
-    bigPhotElem = document.getElementById("bigPhoto");
-    photoGalleryElem = document.getElementById("photoGallery");
-    photoGalleryPhotosElem = document.getElementById("photoGalleryPhotos");
-    pageNrElem = document.getElementById("pageNr");
+    pageNr = 1;
+}
+
+function setHandlers()
+{
+    var searchBtns;
+    var galleryBtns; 
 
     galleryBtns = document.getElementsByClassName("galleryBtn");
     searchBtns = document.getElementsByClassName("backSearchBtn");
-
-    prevBtn = document.getElementById("prevBtn");
-    nextBtn = document.getElementById("nextBtn");
 
     galleryBtn = [];
     for(var i = 0; i < galleryBtns.length; galleryBtn.push(galleryBtns[i++]));
@@ -79,13 +64,40 @@ function init()
 
     prevBtn.addEventListener("click",prevPage);
     nextBtn.addEventListener("click",nextPage);
+}
 
-    prevBtn.disabled = true;
-    prevBtn.style.cursor = "default";
-    
-    
-    pageNr = 1;
+function getLocalStorage()
+{
+    if(typeof(Storage) !== "undefined") 
+    {
+        if (localStorage.savedGalleryPhotos) 
+        {
+            galleryPhotos = JSON.parse(localStorage.getItem("savedGalleryPhotos")); 
+        }
+        else
+        {
+            galleryPhotos = [];
+        }
+    }
+}
 
+function setElems()
+{
+    formElem = document.getElementById("searchForm");
+    flickrImgElem = document.getElementById("flickrImg");
+    largeImgElem = document.getElementById("largeImg");
+    
+    searchInputElem = document.getElementById("searchInput");
+    searchResultElem = document.getElementById("searchResult");
+    bigPhotElem = document.getElementById("bigPhoto");
+    photoGalleryElem = document.getElementById("photoGallery");
+    photoGalleryPhotosElem = document.getElementById("photoGalleryPhotos");
+    pageNrElem = document.getElementById("pageNr");
+
+    
+
+    prevBtn = document.getElementById("prevBtn");
+    nextBtn = document.getElementById("nextBtn");
 }
 
 function prevPage() {
@@ -96,11 +108,11 @@ function prevPage() {
     if(pageNr == 1 || pageNr < 1)
     {
         prevBtn.disabled = true;
-        prevBtn.style.cursor = "default";
+        prevBtn.classList.add("disablePrevBtn");
     }
     else
     {
-        prevBtn.style.cursor = "pointer";
+        prevBtn.classList.add("ablePrevBtn");
     }
 } 
 
@@ -114,10 +126,17 @@ function showStartPage()
 {
     removeGalleryPhotos();
 
-    searchInputElem.style.display = "block";
-    searchResultElem.style.display = "none";
-    bigPhotElem.style.display = "none";
-    photoGalleryElem.style.display = "none";
+    if(searchInputElem.classList.contains("disableDisplay")) searchInputElem.classList.remove("disableDisplay");
+    searchInputElem.classList.add("showDisplay");
+
+    if(searchResultElem.classList.contains("showDisplay")) searchResultElem.classList.remove("showDisplay");
+    searchResultElem.classList.add("disableDisplay");
+
+    if(bigPhotElem.classList.contains("showDisplay")) bigPhotElem.classList.remove("showDisplay");
+    bigPhotElem.classList.add("disableDisplay");
+
+    if(photoGalleryElem.classList.contains("showDisplay")) photoGalleryElem.classList.remove("showDisplay");
+    photoGalleryElem.classList.add("disableDisplay");
 }
 
 function searchImg()
@@ -138,23 +157,33 @@ function searchImg()
 
 function requestNewImgs() 
 {
-	var request; // Object för Ajax-anropet
-	//flickrImgElem.innerHTML = "<img src='pics/progress.gif' style='border:none;' >";
+	var request; 
 	pageNrElem.innerHTML = pageNr;
-	if (XMLHttpRequest) { request = new XMLHttpRequest(); } // Olika objekt (XMLHttpRequest eller ActiveXObject), beroende på webbläsare
-	else if (ActiveXObject) { request = new ActiveXObject("Microsoft.XMLHTTP"); }
-	else { alert("Tyvärr inget stöd för AJAX, så data kan inte läsas in"); return false; }
+    if (XMLHttpRequest) 
+    { 
+        request = new XMLHttpRequest(); 
+    } 
+    else if (ActiveXObject) 
+    { 
+        request = new ActiveXObject("Microsoft.XMLHTTP"); 
+    }
+    else 
+    {
+         alert("Tyvärr inget stöd för AJAX, så data kan inte läsas in"); return false; 
+    }
+
 	request.open("GET","https://api.flickr.com/services/rest/?api_key=" + API_KEY + "&method=flickr.photos.search&tags=" + tags + "&per_page=60&page=" +pageNr + "&format=json&nojsoncallback=1",true);
-	request.send(null); // Skicka begäran till servern
-	request.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
+	request.send(null); 
+    request.onreadystatechange = function () 
+    { 
 		if ( (request.readyState == 4) && (request.status == 200) ) newImgs(request.responseText);
 	};
 } 
 
 function newImgs(response) {
-	var i;			// Loopvariabel
-	var photo;		// Ett foto i svaret
-    var imgUrl;		// Adress till en bild
+	var i;			
+	var photo;		
+    var imgUrl;		
     
 	response = JSON.parse(response);
     flickrImgElem.innerHTML = "";		
@@ -171,8 +200,11 @@ function newImgs(response) {
 		flickrImgElem.appendChild(newElem);
     }
     
-    searchInputElem.style.display = "none";
-    searchResultElem.style.display = "block";
+    if(searchInputElem.classList.contains("showDisplay")) searchInputElem.classList.remove("showDisplay");
+    searchInputElem.classList.add("disableDisplay");
+
+    if(searchResultElem.classList.contains("disableDisplay")) searchResultElem.classList.remove("disableDisplay");
+    searchResultElem.classList.add("showDisplay");
 }
 
 function getPhoto()
@@ -192,13 +224,20 @@ function showLargeImg()
     var newstr; 
     var closeBtn;
 
-    closeBtn =document.getElementById("closeBtn");
+    closeBtn = document.getElementById("closeBtn");
     closeBtn.addEventListener("click", showPhotoGallery);
 
-    searchInputElem.style.display = "none";
-    searchResultElem.style.display = "none";
-    bigPhotElem.style.display = "block";
-    photoGalleryElem.style.display = "none"; 
+    if(searchInputElem.classList.contains("showDisplay")) searchInputElem.classList.remove("showDisplay");
+    searchInputElem.classList.add("disableDisplay");
+
+    if(searchResultElem.classList.contains("showDisplay")) searchResultElem.classList.remove("showDisplay");
+    searchResultElem.classList.add("disableDisplay");
+
+    if(bigPhotElem.classList.contains("disableDisplay")) bigPhotElem.classList.remove("disableDisplay");
+    bigPhotElem.classList.add("showDisplay")
+
+    if(photoGalleryElem.classList.contains("showDisplay")) photoGalleryElem.classList.remove("showDisplay");
+    photoGalleryElem.classList.add("disableDisplay");
 
     newstr = this.src.replace("_s.jpg", "_z.jpg");
     largeImgElem.src = newstr;
@@ -233,15 +272,14 @@ function addToPhotoGallery(photo)
 
 function deleteFromPhotoGallery(photo)
 {
-    galleryPhotos = galleryPhotos.reduce(function(currPhotoGal, currPhoto){
+    galleryPhotos = galleryPhotos.reduce(function(currPhotoGal, currPhoto)
+    {
         if(currPhoto != photo) 
         {
             currPhotoGal.push(currPhoto);  
         }
         return currPhotoGal;
     },[]);
-
-
 }
 
 function showPhotoGallery()
@@ -249,12 +287,8 @@ function showPhotoGallery()
     photos = galleryPhotos;
     var photosP;
 
-    console.log("SHOW GALL", galleryPhotos);
-
-
     if(!galleryPhotos || galleryPhotos.length <= 0)
     {
-        console.log("PP");
         pElem = document.createElement("p");
         pElem.innerHTML = "Du har inga bilder i galleriet";
         pElem.setAttribute("id", "NoPhotosp");
@@ -270,10 +304,17 @@ function showPhotoGallery()
         }
     }
 
-    searchInputElem.style.display = "none";
-    searchResultElem.style.display = "none";
-    bigPhotElem.style.display = "none";
-    photoGalleryElem.style.display = "block";
+    if(searchInputElem.classList.contains("showDisplay")) searchInputElem.classList.remove("showDisplay");
+    searchInputElem.classList.add("disableDisplay");
+
+    if(searchResultElem.classList.contains("showDisplay")) searchResultElem.classList.remove("showDisplay");
+    searchResultElem.classList.add("disableDisplay");
+
+    if(bigPhotElem.classList.contains("showDisplay")) bigPhotElem.classList.remove("showDisplay");
+    bigPhotElem.classList.add("disableDisplay");
+
+    if(photoGalleryElem.classList.contains("disableDisplay")) photoGalleryElem.classList.remove("disableDisplay");
+    photoGalleryElem.classList.add("showDisplay");
 }
 
 function getGalleryPhotos(photo)
@@ -289,6 +330,7 @@ function getGalleryPhotos(photo)
     imgElem =  document.createElement("img");
     imgElem.setAttribute("src",photo);
     divElem.appendChild(imgElem);
+
     imgElem.style.padding = "5px";
 
     btn = document.createElement("button");
@@ -302,28 +344,27 @@ function getGalleryPhotos(photo)
 }
 
 function deleteFromPhotoGalleryBtn(e)
-{
-    
+{ 
     deleteFromPhotoGallery(this.id);
     removeGalleryPhotos();
     showPhotoGallery();
-
-    
 }
 
 function removeGalleryPhotos()
 {
-    console.log("remove gall photo", photoGalleryPhotosElem);
-  while (photoGalleryPhotosElem.firstChild) 
-  {
-      photoGalleryPhotosElem.removeChild(photoGalleryPhotosElem.firstChild);
+    while (photoGalleryPhotosElem.firstChild) 
+    {
+        photoGalleryPhotosElem.removeChild(photoGalleryPhotosElem.firstChild);
     }
+
     localStorage.setItem("savedGalleryPhotos", JSON.stringify(galleryPhotos));
 }
+
 window.addEventListener("keydown", function(e){
     if(e.keyCode != 13) return;
     e.preventDefault();
     e.stopPropagation();
     formElem.searchBtn.click();
-})
+});
+
 window.addEventListener("load", init);

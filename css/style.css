@@ -208,3 +208,23 @@ body h1
 {
     font-size: 22px;
 }
+
+.disablePrevBtn
+{
+    cursor: default;
+}
+
+.ablePrevBtn
+{
+    cursor: pointer;
+}
+
+.disableDisplay
+{
+    display: none !important;
+}
+
+.showDisplay
+{
+    display: block !important;
+}
