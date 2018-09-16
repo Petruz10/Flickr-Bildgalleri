@@ -14,8 +14,6 @@ var photoGalleryPhotosElem;
 var pageNrElem;
 
 var formElem;
-var flickrImgElem;
-var largeImgElem;
 var tags;
 var galleryPhotos;
 var _this;
@@ -84,8 +82,7 @@ function getLocalStorage()
 function setElems()
 {
     formElem = document.getElementById("searchForm");
-    flickrImgElem = document.getElementById("flickrImg");
-    largeImgElem = document.getElementById("largeImg");
+    
     
     searchInputElem = document.getElementById("searchInput");
     searchResultElem = document.getElementById("searchResult");
@@ -93,8 +90,6 @@ function setElems()
     photoGalleryElem = document.getElementById("photoGallery");
     photoGalleryPhotosElem = document.getElementById("photoGalleryPhotos");
     pageNrElem = document.getElementById("pageNr");
-
-    
 
     prevBtn = document.getElementById("prevBtn");
     nextBtn = document.getElementById("nextBtn");
@@ -157,7 +152,8 @@ function searchImg()
 
 function requestNewImgs() 
 {
-	var request; 
+    var request; 
+    
 	pageNrElem.innerHTML = pageNr;
     if (XMLHttpRequest) 
     { 
@@ -183,8 +179,11 @@ function requestNewImgs()
 function newImgs(response) {
 	var i;			
 	var photo;		
-    var imgUrl;		
+    var imgUrl;	
+    var flickrImgElem;	
     
+    flickrImgElem = document.getElementById("flickrImg");
+
 	response = JSON.parse(response);
     flickrImgElem.innerHTML = "";		
     
@@ -223,6 +222,9 @@ function showLargeImg()
     _this = this;
     var newstr; 
     var closeBtn;
+    var largeImgElem;
+
+    largeImgElem = document.getElementById("largeImg");
 
     closeBtn = document.getElementById("closeBtn");
     closeBtn.addEventListener("click", showPhotoGallery);
