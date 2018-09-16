@@ -280,17 +280,22 @@ function getGalleryPhotos(photo)
 {
     var imgElem;
     var btn;
+    var divElem;
+
+    divElem = document.createElement("div");
+    divElem.classList.add("photoGalleryPhoto");
+    photoGalleryPhotosElem.appendChild(divElem);
 
     imgElem =  document.createElement("img");
     imgElem.setAttribute("src",photo);
-    photoGalleryPhotosElem.appendChild(imgElem);
+    divElem.appendChild(imgElem);
     imgElem.style.padding = "5px";
 
     btn = document.createElement("button");
     btn.setAttribute("type", "button");
     btn.setAttribute("id", photo);
     btn.innerHTML = "Radera bild";
-    photoGalleryPhotosElem.appendChild(btn);
+    divElem.appendChild(btn);
 
     imgElem.addEventListener("click", showLargeImg);
     btn.addEventListener("click", deleteFromPhotoGalleryBtn);
@@ -298,19 +303,22 @@ function getGalleryPhotos(photo)
 
 function deleteFromPhotoGalleryBtn(e)
 {
+    
     deleteFromPhotoGallery(this.id);
     removeGalleryPhotos();
     showPhotoGallery();
 
-    localStorage.setItem("savedGalleryPhotos", JSON.stringify(galleryPhotos));
+    
 }
 
 function removeGalleryPhotos()
 {
+    console.log("remove gall photo", photoGalleryPhotosElem);
   while (photoGalleryPhotosElem.firstChild) 
   {
       photoGalleryPhotosElem.removeChild(photoGalleryPhotosElem.firstChild);
     }
+    localStorage.setItem("savedGalleryPhotos", JSON.stringify(galleryPhotos));
 }
 window.addEventListener("keydown", function(e){
     if(e.keyCode != 13) return;

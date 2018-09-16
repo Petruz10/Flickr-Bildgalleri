@@ -6,7 +6,6 @@
     padding: 0;
 }
 
-
 body
 {
     font-family: 'Lobster', cursive;
@@ -17,11 +16,6 @@ body h1
     padding: 20px;
     padding-left: 35px;
     font-size: 40px;
-}
-
-#searchInput
-{
-
 }
 
 #searchInput .galleryBtn
@@ -45,7 +39,6 @@ body h1
     display: inline;
     padding: 11px;
     font-size: 20px;
-
 }
 
 #searchForm
@@ -71,8 +64,6 @@ body h1
 
 #searchBtn
 {
-   /* padding: 14px;*/
-   /* border-radius: 28px;*/
    cursor: pointer;
 }
 
@@ -94,7 +85,7 @@ body h1
 #photoGallery
 {
     display: none;
-    padding-left: 30px;
+    padding: 3px 40px;
 }
 
 #prevBtn
@@ -177,4 +168,43 @@ body h1
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.photoGalleryPhoto
+{
+    margin: 5px;
+    float: left;
+    max-width: 110px;
+
+}
+
+.photoGalleryPhoto img
+{
+    max-width: 100%;
+    height: auto;
+}
+
+.photoGalleryPhoto button
+{
+    margin-left: 4px;
+    padding: 8px;
+    border-radius: 13px;
+}
+
+#photoText
+{
+    padding-bottom: 30px;
+}
+
+#info
+{
+    text-align: right;
+    margin-right: 60px;
+    font-size: 14px;
+    color: #6b706e;
+}
+
+#resultTags
+{
+    font-size: 22px;
 }
