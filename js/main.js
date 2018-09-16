@@ -17,7 +17,7 @@ var formElem;
 var flickrImgElem;
 var largeImgElem;
 var tags;
-var galleryPhotos =[];
+var galleryPhotos;
 var _this;
 
 var galleryBtn;
@@ -31,6 +31,19 @@ function init()
 {
     var searchBtns;
     var galleryBtns;
+
+    if(typeof(Storage) !== "undefined") 
+    {
+        if (localStorage.savedGalleryPhotos) 
+        {
+            galleryPhotos = JSON.parse(localStorage.getItem("savedGalleryPhotos")); 
+        }
+        else
+        {
+            galleryPhotos = [];
+        }
+    }
+
 
     formElem = document.getElementById("searchForm");
     flickrImgElem = document.getElementById("flickrImg");
@@ -209,6 +222,8 @@ function changePhotoGallery()
         _this.classList.add("checkedPhoto");
         addToPhotoGallery(photo);
     }
+
+    localStorage.setItem("savedGalleryPhotos", JSON.stringify(galleryPhotos));
 }
 
 function addToPhotoGallery(photo)
@@ -225,15 +240,34 @@ function deleteFromPhotoGallery(photo)
         }
         return currPhotoGal;
     },[]);
+
+
 }
 
 function showPhotoGallery()
 {
     photos = galleryPhotos;
+    var photosP;
 
-    for(var i=0; i<galleryPhotos.length; i++)
+    console.log("SHOW GALL", galleryPhotos);
+
+
+    if(!galleryPhotos || galleryPhotos.length <= 0)
     {
-        getGalleryPhotos(galleryPhotos[i]);
+        console.log("PP");
+        pElem = document.createElement("p");
+        pElem.innerHTML = "Du har inga bilder i galleriet";
+        pElem.setAttribute("id", "NoPhotosp");
+        photoGalleryElem.appendChild(pElem);
+    }
+    else
+    {
+        photosP = document.getElementById("NoPhotosp");
+        if(photosP) photosP.innerHTML ="";
+        for(var i=0; i<galleryPhotos.length; i++)
+        {
+            getGalleryPhotos(galleryPhotos[i]);
+        }
     }
 
     searchInputElem.style.display = "none";
@@ -244,12 +278,31 @@ function showPhotoGallery()
 
 function getGalleryPhotos(photo)
 {
+    var imgElem;
+    var btn;
+
     imgElem =  document.createElement("img");
     imgElem.setAttribute("src",photo);
     photoGalleryPhotosElem.appendChild(imgElem);
     imgElem.style.padding = "5px";
 
+    btn = document.createElement("button");
+    btn.setAttribute("type", "button");
+    btn.setAttribute("id", photo);
+    btn.innerHTML = "Radera bild";
+    photoGalleryPhotosElem.appendChild(btn);
+
     imgElem.addEventListener("click", showLargeImg);
+    btn.addEventListener("click", deleteFromPhotoGalleryBtn);
+}
+
+function deleteFromPhotoGalleryBtn(e)
+{
+    deleteFromPhotoGallery(this.id);
+    removeGalleryPhotos();
+    showPhotoGallery();
+
+    localStorage.setItem("savedGalleryPhotos", JSON.stringify(galleryPhotos));
 }
 
 function removeGalleryPhotos()
