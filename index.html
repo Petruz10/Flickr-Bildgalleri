@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flickr bilder</title>
     
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -29,19 +30,20 @@
 	
     <div id="searchResult">
 
+            <p id="info">
+                    Markera en eller flera bilder för att lägga till dem i ditt galleri. För att se galleriet klicka på "Visa galleri". 
+                    <br>
+                    Avmarkerar du bilden kommer den ej att sparas. 
+                    <br>
+                    Väljer du att göra en ny sökning kommer de bilder som är markerade att sparas i galleriet
+                    <br>
+                </p>
+
         <div class="resultBtns">
                 <button type="button" class="galleryBtn">Visa galleri</button>
                 <button type="button" class="backSearchBtn">Gör en ny sökning</button>
         </div>
             
-        <p id="info">
-            Markera en eller flera bilder för att lägga till dem i ditt galleri. För att se galleriet klicka på "Visa galleri". 
-            <br>
-            Avmarkerar du bilden kommer den ej att sparas. 
-            <br>
-            Väljer du att göra en ny sökning kommer de bilder som är markerade att sparas i galleriet
-            <br>
-        </p>
         <p id="resultTags">Visar resultat för: </p>
 
             <div id="flickrImg"></div>
@@ -61,11 +63,14 @@
 	
 
     <div id="photoGallery">
+
+            <p id="photoText">Klicka på en bild för att se den i större format</p>
+       
         <div class="resultBtns">
              <button type="button" class="backSearchBtn">Gör en ny sökning</button>
         </div>
 
-        <p id="photoText">Klicka på en bild för att se den i större format</p>
+       
         
         <div id="photoGalleryPhotos"> </div>
 

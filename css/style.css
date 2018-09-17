@@ -30,7 +30,7 @@ body h1
 {
     position: absolute;
     top: 60%;
-    left: 52%;
+    left: 45%;
     transform: translate(-50%, -50%);
 }
 
@@ -45,14 +45,14 @@ body h1
 {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 45%;
     transform: translate(-50%, -50%);
-    font-size: 31px;
+    font-size: 28px;
 }
 
 #searchForm input
 {
-    font-size: 29px;
+    font-size: 20px;
     padding: 8px;
     border-radius: 18px;
 }
@@ -78,7 +78,7 @@ body h1
     display: none;
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    height: 88vh;
     background-color: #24467c;
 }
 
@@ -100,7 +100,6 @@ body h1
 #pageNr
 {
     font-size: 30px;
-    /*margin: 10px;*/
 }
 
 #nextBtn
@@ -168,6 +167,7 @@ body h1
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
+    max-width: 100%;
 }
 
 .photoGalleryPhoto
@@ -227,4 +227,108 @@ body h1
 .showDisplay
 {
     display: block !important;
+}
+
+#NoPhotosp
+{
+    font-size: 30px;
+    text-align: center;
+    padding: 25px;
+}
+
+#flickrImg
+{
+    margin-right: 60px;
+}
+
+@media screen and (max-width: 750px)
+{
+    #searchForm
+    {
+        font-size: 23px;
+    }
+
+    #searchForm input 
+    {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 650px)
+{
+    #searchForm
+    {
+        position: relative;
+        padding: 10px 31px;
+        font-size: 24px;
+        top: 0%;
+        left: 0;
+        transform: none;
+    }
+
+    #searchForm input 
+    {
+        font-size: 18px;
+    }
+
+    #searchInput .galleryBtn 
+    {
+        font-size: 11px;
+        padding: 7px;
+    }
+
+    #searchPageGallery
+    {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        padding: 6px;
+        left: 23%;
+    }
+
+    #searchPageGallery p 
+    {
+        padding: 7px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 565px)
+{
+    .resultBtns
+    {
+        position: relative;
+        margin-left: 15px;
+        margin-bottom: 25px;
+    }
+
+    .resultBtns button 
+    {
+        display: inline-block;
+        position: relative;
+    }
+
+    #photoText 
+    {
+        padding-bottom: 10px;
+    }
+
+    #info 
+    {
+        text-align: left;
+        padding-bottom: 18px;
+    }
+}
+
+@media screen and (max-width: 430px)
+{
+    #searchForm
+    {
+        font-size: 20px;
+    }
+
+    #searchForm input {
+        font-size: 12px;
+    }
 }
