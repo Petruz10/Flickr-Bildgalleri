@@ -159,6 +159,7 @@ body h1
     font-size: 30px;
     font-family: 'Lobster', cursive;
     cursor: pointer;
+    z-index: 2;
 }
 
 #largeImg
