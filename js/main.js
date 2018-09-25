@@ -4,7 +4,7 @@
  * så att ni kan ladda ner applikationen utan problem.
  * annars ska man aldrig lämna ut kodbas öppet med api-nycklar
  */
-var API_KEY = "48a462518d46fee4c62640f416cc7f7f";
+var API_KEY = "APIKEY"; // skaffa en nyckel på flickr.
 
 var searchInputElem;
 var searchResultElem;
